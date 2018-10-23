@@ -8,6 +8,26 @@
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
         </record>
+        
+        <record id="openacademy_partner_form" model="ir.ui.view">
+            <field name="name">openacademy.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lang']" position="before">
+                    <field name="instructor" />
+                </xpath>    
+                <xpath expr="//page[@name='internal_notes']" position="before">
+                    <page name="academy" string="Academy">
+                        <group name="academy_row_1">
+                            
+                            <field name="session_ids"  attrs="{'invisible': [('instructor', '=', True)]}"/>
+                        </group>
+                    </page>     
+                </xpath>
+                           
+            </field>
+        </record>
 
         <menuitem id="configuration_menu" name="Configuration"
                   parent="menu_root" />

@@ -39,6 +39,27 @@
     </record>
 
     <!-- Book Copies views -->
+    <record id="library_bookcopy_form_view" model="ir.ui.view">
+            <field name="name">library.bookcopy.form</field>
+            <field name="model">library.copy</field>
+             <field name="mode">primary</field>
+            <field name="inherit_id" ref="library_book_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='isbn']" position="after">
+                     <field name="reference" />
+                    
+                </xpath>   
+                <xpath expr="//notebook" >
+                <page name="rental" string="Rental">
+                        <group name="rental_row_1">
+                            
+                            <field name="rental_ids" />
+                        </group>
+                    </page> 
+                </xpath> 
+                
+            </field>
+   </record>
 
     <record id="library_copy_search_view" model="ir.ui.view">
         <field name="name">Book Copy search view</field>
@@ -90,6 +111,7 @@
         <field name="name">Book Copies</field>
         <field name="res_model">library.copy</field>
         <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="library_bookcopy_form_view"/>
     </record>
 
     <record id="library_partner_action" model="ir.actions.act_window">
