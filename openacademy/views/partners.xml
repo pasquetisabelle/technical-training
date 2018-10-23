@@ -12,6 +12,7 @@
                     <field name="function" invisible="1"/>
                     <field name="phone"/>
                     <field name="email"/>
+                    <field name="is_instructor"/>
                     <field name="user_id" invisible="1"/>
                     <field name="is_company" invisible="1"/>
                     <field name="country_id" invisible="1"/>
@@ -45,7 +46,22 @@
                         <field name="email" widget="email" required="context.get('force_email', False)" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="phone" widget="phone"/>
                         <field name="mobile" widget="phone"/>
+                        <field name="is_instructor"/>
                     </group>
+                    
+                    <group attrs="{'invisible': [('is_instructor', '=', False)]}">
+                        <notebook colspan="4">
+                            <page string="attendee">
+                                
+                                <field name="session_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                    
+                                    </tree>    
+                                </field>
+                            </page>   
+                        </notebook>
+                    </group>    
                 </form>
             </field>
         </record>
