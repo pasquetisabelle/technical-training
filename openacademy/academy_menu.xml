@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem id="menu_academy" name="Academy" sequence="200"/>
+        <menuitem id="menu_academy_sessions" sequence="10" parent="menu_academy" web_icon="static/description/icon.png" action="action_miadi_session"  />
+        
+ 
+ 
+</odoo>

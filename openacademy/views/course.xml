@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record id="session_search" model="ir.ui.view">
+        <field name="name">session.search</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <search string="Search session">
+                
+                <field name="name" />
+                
+                <field name="start_date"/>
+                
+                <filter domain="[('active', '!=', True)]" name="noactive" string="Terminate"/> 
+                <filter domain="[('active', '=', True)]" name="active" string="Active"/>               
+                <separator/>   
+                <!--
+                <group expand="0" string="Group by">
+                    <filter context="{'group_by':'instructor_id'}" domain="[]" string="Teacher"/>
+                </group>
+                -->
+            </search>
+        </field>
+    </record>
+   
+    <record id="view_miadi_session_tree" model="ir.ui.view" >
+            <field name="name">miadi.session.tree</field>
+            <field name="priority">1</field>
+            <field name="model">openacademy.session</field>        
+            <field name="arch" type="xml">
+                <tree string="Sessions" default_order = "name"  import="false" create="true">
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="duration"  widget="float_time"/>
+                    <field name="instructor_id"/>
+                    <field name="course_id"/>
+                    <field name="attendees_count" widget="progressbar" options="{'max_field': 'seats', 'label_field': 'session seat'}" />
+                    <field name="seats"/>
+                </tree>
+            </field>
+    </record>
+    
+    <record id="miadi_session_form" model="ir.ui.view">
+        <field name="name">miadi.session.form</field>
+        <field name="model">openacademy.session</field>
+        <field name="arch" type="xml">
+            <form string="Sessions">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <H1>
+                            <field name="name" default_focus="1" placeholder="Name of the session"/>                             
+                        </H1>
+                    </div> 
+                    <group>
+                        <group  name="session_row_1">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="instructor_id"/>
+                            <field name="course_id"/>
+                       
+                        </group>
+                        <group  name="session_row_2">
+                            <field name="attendees_count" 
+                            widget="gauge" 
+                            options="{'max_field': 'seats', 'label_field': 'session seat', 'style': 'width:160px; height: 120px;'}" />
+                            <field name="seats"/>
+
+                        </group>
+                    </group>
+                    <group>
+                        <field name="attendee_ids"/>
+                    </group>
+                </sheet>
+                               
+            </form>
+        </field>
+    </record>
+    
+    <record id="action_miadi_session" model="ir.actions.act_window">
+        <field name="name">Session</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">openacademy.session</field>
+        <field name="view_type">form</field>            
+           
+        <field name="view_mode">tree,form</field>
+        
+        <field name="search_view_id" ref="session_search"/>     
+        <field name="context">{"search_default_active":1}</field>
+         
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Help
+            </p>
+            <p>
+                List of sessions.
+            </p>
+        </field>
+    </record>
+    
+ 
+</odoo>

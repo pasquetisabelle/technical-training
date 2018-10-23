@@ -24,6 +24,8 @@
     # always loaded
     'data': [
         "data/openacademy_data.xml",
+        "views/course.xml",
+        "academy_menu.xml",
     ],
     # only loaded in demonstration mode
     'demo': [],
