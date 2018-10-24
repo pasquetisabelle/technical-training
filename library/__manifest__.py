@@ -25,10 +25,12 @@
     'data': [
         "data/library_data.xml",
         "views/menus.xml",
+        "views/payment.xml",
         "views/customer.xml",
         "views/book.xml",
         "views/author.xml",
         "views/rental.xml",
+        "views/setting.xml",
     ],
     # only loaded in demonstration mode
     'demo': [],

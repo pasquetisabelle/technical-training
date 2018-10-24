@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="payment_view_form_id" model="ir.ui.view">
+            <field name="name">payment.form.view</field>
+            <field name="model">library.payment</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        
+                        <group>
+                            <field name="date_payment"/>
+                            <field name="amount" />
+                            <field name="customer_id" />
+                        </group>
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="payment_view_tree_id" model="ir.ui.view">
+            <field name="name">payment.tree.view</field>
+            <field name="model">library.payment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="date_payment"/>
+                    <field name="amount"/>
+                    <field name="customer_id"/>
+                 </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_payment">
+            <field name="name">Payments</field>
+            <field name="res_model">library.payment</field>
+            <field name="view_mode">tree,form</field>
+            
+            <field name="view_ids" eval="[
+                (5, 0, 0),
+                (0, 0, {
+                    'view_mode': 'tree',
+                    'view_id': ref('library.payment_view_tree_id'),
+                    }),
+                (0, 0, {
+                    'view_mode': 'form',
+                    'view_id': ref('library.payment_view_form_id'),
+                    }),
+                ]"/>
+        </record>
+
+        <!-- actions -->
+        <menuitem name="Payments" id="menu_payment" parent="menu_rental_top"
+                  action="action_view_payment"/>
+
+    </data>
+</odoo>

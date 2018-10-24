@@ -20,3 +20,19 @@ class Partner(models.Model):
         'Nationality',
     )
     birthdate =  fields.Date('Birthdate',)
+
+    payment_count = fields.Float(string="Payment Count", compute="_countpayment")
+    payment_ids = fields.One2many('library.payment','customer_id', string="Payment")
+
+    def _countpayment(self):
+        
+        for customer in self:
+            customer.payment_count = len(customer.payment_ids)
+            
+    def action_payment(self):
+        return {"type":"ir.actions.act_window",
+                "name":'library.payment',    
+                "view_mode":"tree,form",
+                "res_model":"library.payment", 
+                "domain" : [('customer_id','=',self.id)]   
+                }

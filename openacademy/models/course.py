@@ -2,6 +2,7 @@
 from datetime import timedelta
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import datetime, date
 
 
 class Course(models.Model):
@@ -46,6 +47,7 @@ class Session(models.Model):
     _name = 'openacademy.session'
     _order = 'name'
 
+
     name = fields.Char(required=True)
     start_date = fields.Date(default=lambda self : fields.Date.today())
     #end_date = fields.Date(default=lambda self : fields.Date.today())
@@ -63,6 +65,8 @@ class Session(models.Model):
     percentage_per_day = fields.Integer("%", default=100)
     attendees_count = fields.Integer(string="Attendees count", compute='_get_attendees_count', store=True)
 
+    state = fields.Selection([ ('draft', 'Draft'),  ('confirm', 'Confirm'),  ('done', 'Done') ], string='State session', default="draft" )   
+    
     def _warning(self, title, message):
         return {'warning': {
             'title': title,
@@ -103,7 +107,8 @@ class Session(models.Model):
             else:
                 # Add duration to start_date, but: Monday + 5 days = Saturday,
                 # so subtract one second to get on Friday instead
-                start = fields.Datetime.from_string(session.start_date)
+                #start = fields.Datetime.from_string(session.start_date)
+                start = session.start_date
                 duration = timedelta(days=session.duration, seconds=-1)
                 session.end_date = start + duration
 
@@ -115,3 +120,21 @@ class Session(models.Model):
                 start_date = fields.Datetime.from_string(session.start_date)
                 end_date = fields.Datetime.from_string(session.end_date)
                 session.duration = (end_date - start_date).days + 1
+                
+                    
+    def write(self, vals):
+
+        res = super(Session, self).write(vals)
+        for session in self:
+            if session.taken_seats >=50 and session.state =="draft":
+                super(Session, session).write({'state': 'confirm'})
+
+        return res
+        
+    def cron_auto_state_process(self):
+        #state_s = "draft"
+        for session in self:
+            if session.end_date and session.state != 'done':
+                if session.end_date < date.today():
+                    session.update({'state': 'done',  })
+                    

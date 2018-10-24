@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="setting_view_form_id" model="ir.ui.view">
+            <field name="name">setting.form.view</field>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="model">res.config.settings</field>
+            <field name="priority">999</field> 
+            <field name="arch" type="xml">       
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    
+                    <div class="app_settings_block" data-string="Library" string="Library" >
+                    
+                        <group>
+                        <field name="amount_rental" />
+                        <field name="fine" />                           
+                        </group>    
+                    </div>                                                                         
+                                                                                 
+                </xpath>                                                         
+             </field>
+         </record>
+    </data>
+</odoo>        
