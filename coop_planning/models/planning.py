@@ -22,7 +22,38 @@ class TaskType(models.Model):
     description = fields.Text()
     area = fields.Char()
     active = fields.Boolean(default=True)
+    
+    @api.multi
+    def name_get(self):
+ 
+        res = super(TaskType, self).name_get()
+        data = []
+        for task in self:
+            display_value = ''
+            display_value += task.name or ""
+            display_value += ' ['
+            display_value += task.description or ""
+            display_value += ']'
+            data.append((task.id, display_value))
+        return data
+    
+    @api.model
+    def name_search_old(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        if name:
+            name = name.split(' / ')[-1]
+            args = [('name', operator, name)] + args
+        return self.search(args, limit=limit).name_get()
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', ('description', operator, name ), ('name', operator, name)]
+            
+        task = self.search(domain + args, limit=limit)
+        return task.name_get()
 
 class DayNumber(models.Model):
     _name = 'coopplanning.daynumber'
